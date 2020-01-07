@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Entity autocomplete by parent module.
+ *
+ * Author: dj
+ * created: 2019.11.14. - 14:10:43
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function entity_autocomplete_by_parent_entity_bundle_field_info_alter(&$fields,
+  EntityTypeInterface $entity_type,
+  $bundle) {
+  foreach ($fields as $field) {
+    $handler = $field->getSetting('handler');
+    if ($handler === 'parent_field_reference') {
+      $field->set('field_type', 'parent_entity_reference');
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function entity_autocomplete_by_parent_field_widget_info_alter(array &$info) {
+  $info['entity_reference_autocomplete']['field_types'][] = 'parent_entity_reference';
+  $info['entity_reference_autocomplete_tags']['field_types'][] = 'parent_entity_reference';
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function entity_autocomplete_by_parent_field_widget_form_alter(&$element,
+  FormStateInterface $form_state,
+  $context) {
+  if (isset($context['widget']) && isset($context['items'])) {
+    \Drupal::service('entity_autocomplete_by_parent.generic')
+      ->fieldWidgetFormAlter($element, $form_state, $context);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Check if form has entity_autocomplete_by_parent field.
+ * Prepare parent element to ajax callback if it is empty.
+ */
+function entity_autocomplete_by_parent_form_alter(array &$form,
+  FormStateInterface $form_state) {
+  $storage = $form_state->getStorage();
+  if (!empty($storage['form_display'])) {
+    if ($form_state->getFormObject() instanceof EntityFormInterface) {
+      \Drupal::service('entity_autocomplete_by_parent.generic')
+        ->formAlter($form, $form_state, $storage);
+    }
+  }
+}

@@ -1,0 +1,5 @@
+name: 'Entity Autocomplete By Parent'
+type: module
+description: 'Entity Autocomplete By Parent a field widget to entity reference autocompleting entity by other field include parent.'
+core: 8.x
+package: 'Fields'

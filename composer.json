@@ -1,0 +1,14 @@
+{
+  "name": "drupal/entity_autocomplete_by_parent",
+  "type": "drupal-module",
+  "description": "Entity Autocomplete By Parent a field widget to entity reference autocompleting entity by other field include parent.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/entity_autocomplete_by_parent",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/entity_autocomplete_by_parent",
+    "source": "http://cgit.drupalcode.org/entity_autocomplete_by_parent"
+  },
+  "require": { }
+}

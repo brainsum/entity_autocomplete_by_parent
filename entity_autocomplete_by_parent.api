@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Eentity autocomplete by parent api.
+ * 
+ * Author: dj
+ * Created: 2020.01.07. - 14:10:56
+ * 
+ * Api definition for module.
+ */
+
+/**
+ * Implements hook_entity_autocomplete_by_parent_arg_alter().
+ */
+function hook_entity_autocomplete_by_parent_arg_alter(array &$parents,
+  array $context) {
+  // Do something with $parents variable.
+}

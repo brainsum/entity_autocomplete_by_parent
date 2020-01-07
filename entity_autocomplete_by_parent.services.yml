@@ -1,0 +1,7 @@
+services:
+  entity_autocomplete_by_parent.autocomplete_matcher_by_parent:
+    class: Drupal\entity_autocomplete_by_parent\EntityAutocompleteMatcherByParent
+    arguments: ['@plugin.manager.entity_reference_selection']
+  entity_autocomplete_by_parent.generic:
+    parent: container.trait
+    class: Drupal\entity_autocomplete_by_parent\GenericService

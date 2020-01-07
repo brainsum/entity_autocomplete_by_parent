@@ -1,0 +1,8 @@
+
+entity_autocomplete_by_parent.entity_autocomplete_by_parent_controller_handleAutocomplete:
+  path: '/entity_reference_autocomplete_by_parent/{target_type}/{selection_handler}/{selection_settings_key}/{parent}'
+  defaults:
+    _controller: '\Drupal\entity_autocomplete_by_parent\Controller\EntityAutocompleteByParentController::handleAutocomplete'
+    _title: 'handleAutocomplete'
+  requirements:
+    _permission: 'access content'
