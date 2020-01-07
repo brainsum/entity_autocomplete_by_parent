@@ -58,7 +58,6 @@ class GenericService implements ContainerAwareInterface {
         switch ($widget_definition['id']) {
           case 'entity_reference_autocomplete':
           case 'entity_reference_autocomplete_tags':
-            $constraints = $field->getConstraints();
             $field_definition->addConstraint('ValidParentReference', [
               'parents' => $this->getParents($settings['handler_settings'], $form_state),
             ]);

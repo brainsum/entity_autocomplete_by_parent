@@ -16,6 +16,11 @@ use Drupal\Core\Entity\Plugin\Validation\Constraint\ValidReferenceConstraint;
  */
 class ValidParentReferenceConstraint extends ValidReferenceConstraint {
 
+  /**
+   * The parents definition.
+   *
+   * @var array
+   */
   public $parents;
 
   /**
