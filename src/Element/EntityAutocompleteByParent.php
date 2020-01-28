@@ -121,6 +121,11 @@ class EntityAutocompleteByParent extends EntityAutocomplete {
     array &$complete_form) {
     $value = NULL;
 
+    // Get max autocreate.
+    $max = isset($element['#selection_settings']['auto_create_max']) ?
+      $element['#selection_settings']['auto_create_max'] : 0;
+    $created = 0;
+
     if (!empty($element['#value'])) {
       $options = $element['#selection_settings'] + [
         'target_type' => $element['#target_type'],
@@ -160,6 +165,11 @@ class EntityAutocompleteByParent extends EntityAutocomplete {
             $value[] = [
               'entity' => $handler->createNewEntity($element['#target_type'], $element['#autocreate']['bundle'], $input, $element['#autocreate']['uid'], $parents),
             ];
+            $created++;
+            if (!empty($max) && $created >= $max) {
+              // Created the settings max elements.
+              break;
+            }
           }
         }
       }
@@ -193,7 +203,12 @@ class EntityAutocompleteByParent extends EntityAutocomplete {
 
         if ($new_entities) {
           if ($autocreate) {
-            $valid_new_entities = $handler->validateReferenceableNewEntities($new_entities);
+            $chunked = $new_entities;
+            if (!empty($max)) {
+              $chunked = array_chunk($new_entities, $max);
+            }
+            $valid_new_entities = $handler
+              ->validateReferenceableNewEntities($chunked);
             $invalid_new_entities = array_diff_key($new_entities, $valid_new_entities);
           }
           else {

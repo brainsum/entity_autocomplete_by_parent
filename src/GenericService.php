@@ -173,15 +173,18 @@ class GenericService implements ContainerAwareInterface {
         if (!empty($form_state->getUserInput()[$field_name])) {
           $parents[] = [$field_name => $form_state->getUserInput()[$field_name]];
         }
-        elseif (!empty($complete_form[$field_name]['#default_value'])) {
-          $parents[] = [$field_name => $complete_form[$field_name]['#default_value']];
+        elseif ($value = $form_state->getValue($field_name)) {
+          $parents[] = [
+            $field_name => is_array($value) ? \reset($value) : $value,
+          ];
         }
         else {
-          $parents[] = [$field_name => $field_name];
+          $parents[] = [$field_name => 'all'];
         }
       }
     }
-    // Allow other modules to alter the $data invoking: hook_TYPE_alter().
+    // Allow other modules to alter the $data invoking:
+    // hook_entity_autocomplete_by_parent_arg_alter().
     $context = [
       'settings' => $settings,
       'form_state' => $form_state,
@@ -217,6 +220,9 @@ class GenericService implements ContainerAwareInterface {
     if (isset($storage['parent_field_reference_fields'])) {
       foreach ($storage['parent_field_reference_fields'] as $field_name => $class) {
         if (!empty($class)) {
+          if (isset($form[$field_name]['#groups']['content']['#group_exists'])) {
+            unset($form[$field_name]['#groups']['content']['#group_exists']);
+          }
           $response->addCommand(new ReplaceCommand('.' . $class, ($form[$field_name])));
         }
       }
