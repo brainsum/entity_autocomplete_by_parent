@@ -160,15 +160,14 @@ class EntityAutocompleteByParent extends EntityAutocomplete {
             /** @var \Drupal\Core\Entity\EntityReferenceSelection\SelectionWithAutocreateInterface $handler */
             // Auto-create item. See an example of how this is handled in
             // \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem::presave().
-            $parents = \Drupal::service('entity_autocomplete_by_parent.generic')
-              ->getParents($element['#selection_settings'], $form_state, $complete_form);
-            $value[] = [
-              'entity' => $handler->createNewEntity($element['#target_type'], $element['#autocreate']['bundle'], $input, $element['#autocreate']['uid'], $parents),
-            ];
-            $created++;
-            if (!empty($max) && $created >= $max) {
-              // Created the settings max elements.
-              break;
+            if ($max == 0 || $created < $max) {
+              // Create if settings max is less than count of new elements.
+              $parents = \Drupal::service('entity_autocomplete_by_parent.generic')
+                ->getParents($element['#selection_settings'], $form_state, $complete_form);
+              $value[] = [
+                'entity' => $handler->createNewEntity($element['#target_type'], $element['#autocreate']['bundle'], $input, $element['#autocreate']['uid'], $parents),
+              ];
+              $created++;
             }
           }
         }
